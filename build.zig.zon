@@ -1,0 +1,16 @@
+.{
+    .name = .dcimguizmo,
+    .version = "0.16.0",
+    .dependencies = .{
+        .imguizmo = .{
+            .url = "git+https://github.com/CedricGuillemet/ImGuizmo.git#be8aa4aeab86b402701c8c1df011bd8cd776760b",
+            .hash = "N-V-__8AAHRReAAZQJei_NWQWC8Q1LrtJHUTz1YEIndz3jPS",
+        },
+        .cimgui_zig = .{
+            .url = "git+https://github.com/tiawl/cimgui.zig.git#6236ef65bcb28dce7c85551ff666c6a05958ce70",
+            .hash = "cimgui_zig-1.0.0-2Xubko0ywgAapZ7NuD-boXc-ilbB5pSk77zwZmQ3va2o",
+        },
+    },
+    .paths = .{""},
+    .fingerprint = 0x4d788bd98acfd06c,
+}
