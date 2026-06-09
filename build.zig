@@ -66,6 +66,7 @@ pub fn build(b: *std.Build) void {
             });
 
             module.addCSourceFile(.{ .file = b.path("src/cimguizmo.cpp") });
+            module.addCSourceFile(.{ .file = imguizmo_dependency.path("src/ImGuizmo.cpp") });
             module.addIncludePath(b.path("src"));
             module.addIncludePath(imguizmo_dependency.path("src/"));
             module.addIncludePath(imgui_dependency.path("dcimgui/master/"));
