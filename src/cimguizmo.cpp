@@ -39,222 +39,97 @@ CIMGUI_API void cimgui::cEditTransform(Camera camera, matrix_t* matrix)
 
 #endif // #if 0
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetDrawlist(void)
+CIMGUI_API void cimgui::ImGuizmo_SetDrawlist(void)
 {
-    ::IMGUIZMO_NAMESPACE::SetDrawlist();
+    ::ImGui::SetDrawlist();
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetDrawlistEx(ImDrawList* drawlist)
+CIMGUI_API void cimgui::ImGuizmo_SetDrawlistEx(ImDrawList* drawlist)
 {
-    ::IMGUIZMO_NAMESPACE::SetDrawlist(drawlist);
+    ::ImGui::SetDrawlist(drawlist);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEBeginFrame(void)
+CIMGUI_API void cimgui::ImGuizmo_BeginFrame(void)
 {
-    ::IMGUIZMO_NAMESPACE::BeginFrame();
+    ::ImGui::BeginFrame();
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetImGuiContext(ImGuiContext* ctx)
+CIMGUI_API void cimgui::ImGuizmo_SetImGuiContext(ImGuiContext* ctx)
 {
-    ::IMGUIZMO_NAMESPACE::SetImGuiContext(ctx);
+    ::ImGui::SetImGuiContext(ctx);
 }
 
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsOver(void)
+CIMGUI_API bool cimgui::ImGuizmo_IsOver(void)
 {
-    return ::IMGUIZMO_NAMESPACE::IsOver();
+    return ::ImGui::IsOver();
 }
 
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsUsing(void)
+CIMGUI_API bool cimgui::ImGuizmo_IsUsing(void)
 {
-    return ::IMGUIZMO_NAMESPACE::IsUsing();
+    return ::ImGui::IsUsing();
 }
 
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsUsingViewManipulate(void)
+CIMGUI_API bool cimgui::ImGuizmo_IsUsingViewManipulate(void)
 {
-    return ::IMGUIZMO_NAMESPACE::IsUsingViewManipulate();
+    return ::ImGui::IsUsingViewManipulate();
 }
 
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsViewManipulateHovered(void)
+CIMGUI_API bool cimgui::ImGuizmo_IsViewManipulateHovered(void)
 {
-    return ::IMGUIZMO_NAMESPACE::IsViewManipulateHovered();
+    return ::ImGui::IsViewManipulateHovered();
 }
 
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsUsingAny(void)
+CIMGUI_API bool cimgui::ImGuizmo_IsUsingAny(void)
 {
-    return ::IMGUIZMO_NAMESPACE::IsUsingAny();
+    return ::ImGui::IsUsingAny();
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEEnable(bool enable)
+CIMGUI_API void cimgui::ImGuizmo_Enable(bool enable)
 {
-    ::IMGUIZMO_NAMESPACE::Enable(enable);
+    ::ImGui::Enable(enable);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDecomposeMatrixToComponents(const float* matrix, float* translation, float* rotation, float* scale)
+CIMGUI_API void cimgui::ImGuizmo_DecomposeMatrixToComponents(const float* matrix, float* translation, float* rotation, float* scale)
 {
-    ::IMGUIZMO_NAMESPACE::DecomposeMatrixToComponents(matrix, translation, rotation, scale);
+    ::ImGui::DecomposeMatrixToComponents(matrix, translation, rotation, scale);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACERecomposeMatrixFromComponents(const float* translation, const float* rotation, const float* scale, float* matrix)
+CIMGUI_API void cimgui::ImGuizmo_RecomposeMatrixFromComponents(const float* translation, const float* rotation, const float* scale, float* matrix)
 {
-    ::IMGUIZMO_NAMESPACE::RecomposeMatrixFromComponents(translation, rotation, scale, matrix);
+    ::ImGui::RecomposeMatrixFromComponents(translation, rotation, scale, matrix);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetRect(float x, float y, float width, float height)
+CIMGUI_API void cimgui::ImGuizmo_SetRect(float x, float y, float width, float height)
 {
-    ::IMGUIZMO_NAMESPACE::SetRect(x, y, width, height);
+    ::ImGui::SetRect(x, y, width, height);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetOrthographic(bool isOrthographic)
+CIMGUI_API void cimgui::ImGuizmo_SetOrthographic(bool isOrthographic)
 {
-    ::IMGUIZMO_NAMESPACE::SetOrthographic(isOrthographic);
+    ::ImGui::SetOrthographic(isOrthographic);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDrawAxes(const float* view, const float* projection, const float* matrices, int matrixCount)
+CIMGUI_API void cimgui::ImGuizmo_DrawAxes(const float* view, const float* projection, const float* matrices, int matrixCount)
 {
-    ::IMGUIZMO_NAMESPACE::DrawAxes(view, projection, matrices, matrixCount);
+    ::ImGui::DrawAxes(view, projection, matrices, matrixCount);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDrawCubes(const float* view, const float* projection, const float* matrices, int matrixCount)
+CIMGUI_API void cimgui::ImGuizmo_DrawCubes(const float* view, const float* projection, const float* matrices, int matrixCount)
 {
-    ::IMGUIZMO_NAMESPACE::DrawCubes(view, projection, matrices, matrixCount);
+    ::ImGui::DrawCubes(view, projection, matrices, matrixCount);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDrawGrid(const float* view, const float* projection, const float* matrix, const float gridSize)
+CIMGUI_API void cimgui::ImGuizmo_DrawGrid(const float* view, const float* projection, const float* matrix, const float gridSize)
 {
-    ::IMGUIZMO_NAMESPACE::DrawGrid(view, projection, matrix, gridSize);
+    ::ImGui::DrawGrid(view, projection, matrix, gridSize);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDrawGridCustom(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision)
+CIMGUI_API void cimgui::ImGuizmo_DrawGridCustom(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision)
 {
-    ::IMGUIZMO_NAMESPACE::DrawGridCustom(view, projection, matrix, gridSize, majorStep, subdivision);
+    ::ImGui::DrawGridCustom(view, projection, matrix, gridSize, majorStep, subdivision);
 }
 
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEDrawGridCustomColor(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision, const ImU32 majorCol, const ImU32 minorCol, const ImU32 centerCol)
+CIMGUI_API void cimgui::ImGuizmo_DrawGridCustomColor(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision, const ImU32 majorCol, const ImU32 minorCol, const ImU32 centerCol)
 {
-    ::IMGUIZMO_NAMESPACE::DrawGridCustomColor(view, projection, matrix, gridSize, majorStep, subdivision, majorCol, minorCol, centerCol);
-}
-
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEManipulate(const float* view, const float* projection, cimgui::OPERATION operation, cimgui::MODE mode, float* matrix)
-{
-    return ::IMGUIZMO_NAMESPACE::Manipulate(view, projection, reinterpret_cast<::OPERATION>(operation), reinterpret_cast<::MODE>(mode), matrix);
-}
-
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEManipulateEx(const float* view, const float* projection, cimgui::OPERATION operation, cimgui::MODE mode, float* matrix, float* deltaMatrix, const float* snap, const float* localBounds, const float* boundsSnap)
-{
-    return ::IMGUIZMO_NAMESPACE::Manipulate(view, projection, reinterpret_cast<::OPERATION>(operation), reinterpret_cast<::MODE>(mode), matrix, deltaMatrix, snap, localBounds, boundsSnap);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEViewManipulate(float* view, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor)
-{
-    ::IMGUIZMO_NAMESPACE::ViewManipulate(view, length, position, size, backgroundColor);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEViewManipulateFloatPtr(float* view, const float* projection, cimgui::OPERATION operation, cimgui::MODE mode, float* matrix, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor)
-{
-    ::IMGUIZMO_NAMESPACE::ViewManipulate(view, projection, reinterpret_cast<::OPERATION>(operation), reinterpret_cast<::MODE>(mode), matrix, length, position, size, backgroundColor);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetAlternativeWindow(cimgui::ImGuiWindow* window)
-{
-    ::IMGUIZMO_NAMESPACE::SetAlternativeWindow(reinterpret_cast<::ImGuiWindow*>(window));
-}
-
-CIMGUI_API void    cimgui::IMGUIZMO_NAMESPACEPushID(const char* str_id)
-{
-    ::IMGUIZMO_NAMESPACE::PushID(str_id);
-}
-
-CIMGUI_API void    cimgui::IMGUIZMO_NAMESPACEPushIDStr(const char* str_id_begin, const char* str_id_end)
-{
-    ::IMGUIZMO_NAMESPACE::PushID(str_id_begin, str_id_end);
-}
-
-CIMGUI_API void    cimgui::IMGUIZMO_NAMESPACEPushIDPtr(const void* ptr_id)
-{
-    ::IMGUIZMO_NAMESPACE::PushID(ptr_id);
-}
-
-CIMGUI_API void    cimgui::IMGUIZMO_NAMESPACEPushIDInt(int int_id)
-{
-    ::IMGUIZMO_NAMESPACE::PushID(int_id);
-}
-
-CIMGUI_API void    cimgui::IMGUIZMO_NAMESPACEPopID(void)
-{
-    ::IMGUIZMO_NAMESPACE::PopID();
-}
-
-CIMGUI_API ImGuiID cimgui::IMGUIZMO_NAMESPACEGetID(const char* str_id)
-{
-    return ::IMGUIZMO_NAMESPACE::GetID(str_id);
-}
-
-CIMGUI_API ImGuiID cimgui::IMGUIZMO_NAMESPACEGetIDStr(const char* str_id_begin, const char* str_id_end)
-{
-    return ::IMGUIZMO_NAMESPACE::GetID(str_id_begin, str_id_end);
-}
-
-CIMGUI_API ImGuiID cimgui::IMGUIZMO_NAMESPACEGetIDPtr(const void* ptr_id)
-{
-    return ::IMGUIZMO_NAMESPACE::GetID(ptr_id);
-}
-
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsOverOPERATION(cimgui::OPERATION op)
-{
-    return ::IMGUIZMO_NAMESPACE::IsOver(reinterpret_cast<::OPERATION>(op));
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetGizmoSizeClipSpace(float value)
-{
-    ::IMGUIZMO_NAMESPACE::SetGizmoSizeClipSpace(value);
-}
-
-CIMGUI_API cimgui::MOVETYPE cimgui::IMGUIZMO_NAMESPACEGetActiveHandleType(void)
-{
-    return static_cast<::cimgui::MOVETYPE>(::IMGUIZMO_NAMESPACE::GetActiveHandleType());
-}
-
-CIMGUI_API cimgui::MOVETYPE cimgui::IMGUIZMO_NAMESPACEGetHoveredHandleType(void)
-{
-    return static_cast<::cimgui::MOVETYPE>(::IMGUIZMO_NAMESPACE::GetHoveredHandleType());
-}
-
-CIMGUI_API cimgui::MOVETYPE cimgui::IMGUIZMO_NAMESPACEGetActiveMoveType(void)
-{
-    return static_cast<::cimgui::MOVETYPE>(::IMGUIZMO_NAMESPACE::GetActiveMoveType());
-}
-
-CIMGUI_API cimgui::MOVETYPE cimgui::IMGUIZMO_NAMESPACEGetHoveredMoveType(void)
-{
-    return static_cast<::cimgui::MOVETYPE>(::IMGUIZMO_NAMESPACE::GetHoveredMoveType());
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACEAllowAxisFlip(bool value)
-{
-    ::IMGUIZMO_NAMESPACE::AllowAxisFlip(value);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetAxisLimit(float value)
-{
-    ::IMGUIZMO_NAMESPACE::SetAxisLimit(value);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetAxisMask(bool x, bool y, bool z)
-{
-    ::IMGUIZMO_NAMESPACE::SetAxisMask(x, y, z);
-}
-
-CIMGUI_API void cimgui::IMGUIZMO_NAMESPACESetPlaneLimit(float value)
-{
-    ::IMGUIZMO_NAMESPACE::SetPlaneLimit(value);
-}
-
-CIMGUI_API bool cimgui::IMGUIZMO_NAMESPACEIsOverFloatPtr(float* position, float pixelRadius)
-{
-    return ::IMGUIZMO_NAMESPACE::IsOver(position, pixelRadius);
-}
-
-CIMGUI_API cimgui::Style* cimgui::IMGUIZMO_NAMESPACEGetStyle(void)
-{
-    return reinterpret_cast<::cimgui::Style*>(&::IMGUIZMO_NAMESPACE::GetStyle());
+    ::ImGui::DrawGridCustomColor(view, projection, matrix, gridSize, majorStep, subdivision, majorCol, minorCol, centerCol);
 }

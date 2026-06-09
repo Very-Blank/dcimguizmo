@@ -55,8 +55,6 @@
 #if 0
 CIMGUI_API void cEditTransform(Camera camera, matrix_t* matrix);
 #endif // #if 0
-// Auto-generated forward declarations for C header
-typedef struct IMGUIZMO_NAMESPACEStyle_t IMGUIZMO_NAMESPACEStyle;
 #pragma once
 
 #ifdef __cplusplus
@@ -69,223 +67,77 @@ extern "C"
 #ifndef CIMGUI_API
 #define CIMGUI_API
 #endif // #ifndef CIMGUI_API
-#ifndef IMGUIZMO_NAMESPACE
-#define IMGUIZMO_NAMESPACE ImGuizmo
-#endif // #ifndef IMGUIZMO_NAMESPACE
+#ifndef ImGui
+#define ImGui ImGuizmo
+#endif // #ifndef ImGui
 typedef struct ImGuiWindow_t ImGuiWindow;
 
 // call inside your own window and before Manipulate() in order to draw gizmo to that window.
-// Or pass a specific ImDrawList to draw to (e.g. ImGui::GetForegroundDrawList()).
-CIMGUI_API void IMGUIZMO_NAMESPACESetDrawlist(void);                                    // Implied drawlist = nullptr
-CIMGUI_API void IMGUIZMO_NAMESPACESetDrawlistEx(ImDrawList* drawlist /* = nullptr */);
+// Or pass a specific ImDrawList to draw to (e.g. GetForegroundDrawList()).
+CIMGUI_API void ImGuizmo_SetDrawlist(void);                                 // Implied drawlist = nullptr
+CIMGUI_API void ImGuizmo_SetDrawlistEx(ImDrawList* drawlist /* = nullptr */);
 
 // call BeginFrame right after ImGui_XXXX_NewFrame();
-CIMGUI_API void IMGUIZMO_NAMESPACEBeginFrame(void);
+CIMGUI_API void ImGuizmo_BeginFrame(void);
 
 // this is necessary because when imguizmo is compiled into a dll, and imgui into another
 // globals are not shared between them.
 // More details at https://stackoverflow.com/questions/19373061/what-happens-to-global-and-static-variables-in-a-shared-library-when-it-is-dynam
 // expose method to set imgui context
-CIMGUI_API void IMGUIZMO_NAMESPACESetImGuiContext(ImGuiContext* ctx);
+CIMGUI_API void ImGuizmo_SetImGuiContext(ImGuiContext* ctx);
 
 // return true if mouse cursor is over any gizmo control (axis, plan or screen component)
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsOver(void);
+CIMGUI_API bool ImGuizmo_IsOver(void);
 
 // return true if mouse IsOver or if the gizmo is in moving state
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsUsing(void);
+CIMGUI_API bool ImGuizmo_IsUsing(void);
 
 // return true if the view gizmo is in moving state
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsUsingViewManipulate(void);
+CIMGUI_API bool ImGuizmo_IsUsingViewManipulate(void);
 // only check if your mouse is over the view manipulator - no matter whether it's active or not
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsViewManipulateHovered(void);
+CIMGUI_API bool ImGuizmo_IsViewManipulateHovered(void);
 
 // return true if any gizmo is in moving state
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsUsingAny(void);
+CIMGUI_API bool ImGuizmo_IsUsingAny(void);
 
 // enable/disable the gizmo. Stay in the state until next call to Enable.
 // gizmo is rendered with gray half transparent color when disabled
-CIMGUI_API void IMGUIZMO_NAMESPACEEnable(bool enable);
+CIMGUI_API void ImGuizmo_Enable(bool enable);
 
 // helper functions for manualy editing translation/rotation/scale with an input float
 // translation, rotation and scale float points to 3 floats each
 // Angles are in degrees (more suitable for human editing)
 // example:
 // float matrixTranslation[3], matrixRotation[3], matrixScale[3];
-// ImGuizmo::DecomposeMatrixToComponents(gizmoMatrix.m16, matrixTranslation, matrixRotation, matrixScale);
-// ImGui::InputFloat3("Tr", matrixTranslation, 3);
-// ImGui::InputFloat3("Rt", matrixRotation, 3);
-// ImGui::InputFloat3("Sc", matrixScale, 3);
-// ImGuizmo::RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, gizmoMatrix.m16);
+// DecomposeMatrixToComponents(gizmoMatrix.m16, matrixTranslation, matrixRotation, matrixScale);
+// InputFloat3("Tr", matrixTranslation, 3);
+// InputFloat3("Rt", matrixRotation, 3);
+// InputFloat3("Sc", matrixScale, 3);
+// RecomposeMatrixFromComponents(matrixTranslation, matrixRotation, matrixScale, gizmoMatrix.m16);
 //
 // These functions have some numerical stability issues for now. Use with caution.
-CIMGUI_API void IMGUIZMO_NAMESPACEDecomposeMatrixToComponents(const float* matrix, float* translation, float* rotation, float* scale);
-CIMGUI_API void IMGUIZMO_NAMESPACERecomposeMatrixFromComponents(const float* translation, const float* rotation, const float* scale, float* matrix);
+CIMGUI_API void ImGuizmo_DecomposeMatrixToComponents(const float* matrix, float* translation, float* rotation, float* scale);
+CIMGUI_API void ImGuizmo_RecomposeMatrixFromComponents(const float* translation, const float* rotation, const float* scale, float* matrix);
 
-CIMGUI_API void IMGUIZMO_NAMESPACESetRect(float x, float y, float width, float height);
+CIMGUI_API void ImGuizmo_SetRect(float x, float y, float width, float height);
 // default is false
-CIMGUI_API void IMGUIZMO_NAMESPACESetOrthographic(bool isOrthographic);
+CIMGUI_API void ImGuizmo_SetOrthographic(bool isOrthographic);
 
 // Render coordinate system axes (red X, green Y and blue Z). Usefull for debug/tests
-CIMGUI_API void IMGUIZMO_NAMESPACEDrawAxes(const float* view, const float* projection, const float* matrices, int matrixCount);
+CIMGUI_API void ImGuizmo_DrawAxes(const float* view, const float* projection, const float* matrices, int matrixCount);
 // Render a cube with face color corresponding to face normal. Usefull for debug/tests
-CIMGUI_API void IMGUIZMO_NAMESPACEDrawCubes(const float* view, const float* projection, const float* matrices, int matrixCount);
-CIMGUI_API void IMGUIZMO_NAMESPACEDrawGrid(const float* view, const float* projection, const float* matrix, const float gridSize);
+CIMGUI_API void ImGuizmo_DrawCubes(const float* view, const float* projection, const float* matrices, int matrixCount);
+CIMGUI_API void ImGuizmo_DrawGrid(const float* view, const float* projection, const float* matrix, const float gridSize);
 // Render grid with customizable major line step and amount of segments between major lines.
 // NOTE(m.wlasiuk) : calling this function with majorStep = 1.0f and subdivision = 1 is equivalent to DrawGrid in terms of the end result but performs more calculations
-CIMGUI_API void IMGUIZMO_NAMESPACEDrawGridCustom(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision);
+CIMGUI_API void ImGuizmo_DrawGridCustom(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision);
 // Render grid with customizable major line step and amount of segments between major lines and with possibility to set custom colors for major, minor and center lines
-CIMGUI_API void IMGUIZMO_NAMESPACEDrawGridCustomColor(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision, const ImU32 majorCol, const ImU32 minorCol, const ImU32 centerCol);
+CIMGUI_API void ImGuizmo_DrawGridCustomColor(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision, const ImU32 majorCol, const ImU32 minorCol, const ImU32 centerCol);
 
 // call it when you want a gizmo
 // Needs view and projection matrices.
 // matrix parameter is the source matrix (where will be gizmo be drawn) and might be transformed by the function. Return deltaMatrix is optional
 // translation is applied in world space
-typedef enum
-{
-    TRANSLATE_X   = (1<<0),
-    TRANSLATE_Y   = (1<<1),
-    TRANSLATE_Z   = (1<<2),
-    ROTATE_X      = (1<<3),
-    ROTATE_Y      = (1<<4),
-    ROTATE_Z      = (1<<5),
-    ROTATE_SCREEN = (1<<6),
-    SCALE_X       = (1<<7),
-    SCALE_Y       = (1<<8),
-    SCALE_Z       = (1<<9),
-    BOUNDS        = (1<<10),
-    SCALE_XU      = (1<<11),
-    SCALE_YU      = (1<<12),
-    SCALE_ZU      = (1<<13),
-
-    TRANSLATE     = TRANSLATE_X | TRANSLATE_Y | TRANSLATE_Z,
-    ROTATE        = ROTATE_X | ROTATE_Y | ROTATE_Z | ROTATE_SCREEN,
-    SCALE         = SCALE_X | SCALE_Y | SCALE_Z,
-    SCALEU        = SCALE_XU | SCALE_YU | SCALE_ZU,  // universal
-    UNIVERSAL     = TRANSLATE | ROTATE | SCALEU,
-} IMGUIZMO_NAMESPACEOPERATION;
-
-typedef enum
-{
-    LOCAL,
-    WORLD,
-} IMGUIZMO_NAMESPACEMODE;
-
-CIMGUI_API bool IMGUIZMO_NAMESPACEManipulate(const float* view, const float* projection, OPERATION operation, MODE mode, float* matrix);  // Implied deltaMatrix = NULL, snap = NULL, localBounds = NULL, boundsSnap = NULL
-CIMGUI_API bool IMGUIZMO_NAMESPACEManipulateEx(const float* view, const float* projection, OPERATION operation, MODE mode, float* matrix, float* deltaMatrix /* = NULL */, const float* snap /* = NULL */, const float* localBounds /* = NULL */, const float* boundsSnap /* = NULL */);
-//
-// Please note that this cubeview is patented by Autodesk : https://patents.google.com/patent/US7782319B2/en
-// It seems to be a defensive patent in the US. I don't think it will bring troubles using it as
-// other software are using the same mechanics. But just in case, you are now warned!
-//
-CIMGUI_API void IMGUIZMO_NAMESPACEViewManipulate(float* view, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor);
-
-// use this version if you did not call Manipulate before and you are just using ViewManipulate
-CIMGUI_API void IMGUIZMO_NAMESPACEViewManipulateFloatPtr(float* view, const float* projection, OPERATION operation, MODE mode, float* matrix, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor);
-
-CIMGUI_API void IMGUIZMO_NAMESPACESetAlternativeWindow(ImGuiWindow* window);
-
-// ID stack/scopes
-// Read the FAQ (docs/FAQ.md or http://dearimgui.org/faq) for more details about how ID are handled in dear imgui.
-// - Those questions are answered and impacted by understanding of the ID stack system:
-//   - "Q: Why is my widget not reacting when I click on it?"
-//   - "Q: How can I have widgets with an empty label?"
-//   - "Q: How can I have multiple widgets with the same label?"
-// - Short version: ID are hashes of the entire ID stack. If you are creating widgets in a loop you most likely
-//   want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
-// - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
-// - In this header file we use the "label"/"name" terminology to denote a string that will be displayed + used as an ID,
-//   whereas "str_id" denote a string that is only used as an ID and not normally displayed.
-CIMGUI_API void    IMGUIZMO_NAMESPACEPushID(const char* str_id);                                   // push string into the ID stack (will hash string).
-CIMGUI_API void    IMGUIZMO_NAMESPACEPushIDStr(const char* str_id_begin, const char* str_id_end);  // push string into the ID stack (will hash string).
-CIMGUI_API void    IMGUIZMO_NAMESPACEPushIDPtr(const void* ptr_id);                                // push pointer into the ID stack (will hash pointer).
-CIMGUI_API void    IMGUIZMO_NAMESPACEPushIDInt(int int_id);                                        // push integer into the ID stack (will hash integer).
-CIMGUI_API void    IMGUIZMO_NAMESPACEPopID(void);                                                  // pop from the ID stack.
-CIMGUI_API ImGuiID IMGUIZMO_NAMESPACEGetID(const char* str_id);                                    // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
-CIMGUI_API ImGuiID IMGUIZMO_NAMESPACEGetIDStr(const char* str_id_begin, const char* str_id_end);
-CIMGUI_API ImGuiID IMGUIZMO_NAMESPACEGetIDPtr(const void* ptr_id);
-
-// return true if the cursor is over the operation's gizmo
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsOverOPERATION(OPERATION op);
-CIMGUI_API void IMGUIZMO_NAMESPACESetGizmoSizeClipSpace(float value);
-
-// Handle type used by the translate/rotate/scale gizmos.
-typedef enum
-{
-    MT_NONE,
-    MT_MOVE_X,
-    MT_MOVE_Y,
-    MT_MOVE_Z,
-    MT_MOVE_YZ,
-    MT_MOVE_ZX,
-    MT_MOVE_XY,
-    MT_MOVE_SCREEN,
-    MT_ROTATE_X,
-    MT_ROTATE_Y,
-    MT_ROTATE_Z,
-    MT_ROTATE_SCREEN,
-    MT_SCALE_X,
-    MT_SCALE_Y,
-    MT_SCALE_Z,
-    MT_SCALE_XYZ,
-} IMGUIZMO_NAMESPACEMOVETYPE;
-
-// Returns which handle is actively being dragged, or MT_NONE.
-CIMGUI_API MOVETYPE IMGUIZMO_NAMESPACEGetActiveHandleType(void);
-// Returns which handle is currently hovered, or MT_NONE.
-CIMGUI_API MOVETYPE IMGUIZMO_NAMESPACEGetHoveredHandleType(void);
-// Aliases matching the MOVETYPE enum name.
-CIMGUI_API MOVETYPE IMGUIZMO_NAMESPACEGetActiveMoveType(void);
-CIMGUI_API MOVETYPE IMGUIZMO_NAMESPACEGetHoveredMoveType(void);
-
-// Allow axis to flip
-// When true (default), the guizmo axis flip for better visibility
-// When false, they always stay along the positive world/local axis
-CIMGUI_API void IMGUIZMO_NAMESPACEAllowAxisFlip(bool value);
-
-// Configure the limit where axis are hidden
-CIMGUI_API void IMGUIZMO_NAMESPACESetAxisLimit(float value);
-// Set an axis mask to permanently hide a given axis (true -> hidden, false -> shown)
-CIMGUI_API void IMGUIZMO_NAMESPACESetAxisMask(bool x, bool y, bool z);
-// Configure the limit where planes are hiden
-CIMGUI_API void IMGUIZMO_NAMESPACESetPlaneLimit(float value);
-// from a x,y,z point in space and using Manipulation view/projection matrix, check if mouse is in pixel radius distance of that projected point
-CIMGUI_API bool IMGUIZMO_NAMESPACEIsOverFloatPtr(float* position, float pixelRadius);
-
-typedef enum
-{
-    DIRECTION_X,       // directionColor[0]
-    DIRECTION_Y,       // directionColor[1]
-    DIRECTION_Z,       // directionColor[2]
-    PLANE_X,           // planeColor[0]
-    PLANE_Y,           // planeColor[1]
-    PLANE_Z,           // planeColor[2]
-    SELECTION,         // selectionColor
-    INACTIVE,          // inactiveColor
-    TRANSLATION_LINE,  // translationLineColor
-    SCALE_LINE,
-    ROTATION_USING_BORDER,
-    ROTATION_USING_FILL,
-    HATCHED_AXIS_LINES,
-    TEXT,
-    TEXT_SHADOW,
-    COUNT,
-} IMGUIZMO_NAMESPACECOLOR;
-
-struct IMGUIZMO_NAMESPACEStyle_t
-{
-    float  TranslationLineThickness;    // Thickness of lines for translation gizmo
-    float  TranslationLineArrowSize;    // Size of arrow at the end of lines for translation gizmo
-    float  RotationLineThickness;       // Thickness of lines for rotation gizmo
-    float  RotationOuterLineThickness;  // Thickness of line surrounding the rotation gizmo
-    float  ScaleLineThickness;          // Thickness of lines for scale gizmo
-    float  ScaleLineCircleSize;         // Size of circle at the end of lines for scale gizmo
-    float  HatchedAxisLineThickness;    // Thickness of hatched axis lines
-    float  CenterCircleSize;            // Size of circle at the center of the translate/scale gizmo
-
-    ImVec4 Colors[COLOR::COUNT];
-};
-
-CIMGUI_API Style* IMGUIZMO_NAMESPACEGetStyle(void);
 #ifdef __cplusplus
 } // End of extern "C" block
 #endif
