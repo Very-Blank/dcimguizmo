@@ -7,13 +7,19 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
+    const renderers = b.option([]const Renderer, "renderers", "Specify the renderer backends");
+    const platforms = b.option([]const Platform, "platforms", "Specify the platform backends");
+    const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?");
+
     const imgui_dependency = b.dependency("cimgui_zig", .{
         .target = target,
         .optimize = optimize,
-        .platforms = &[_]Platform{.GLFW},
-        .renderers = &[_]Renderer{.OpenGL3},
-        .docking = false,
+        .platforms = renderers,
+        .renderers = platforms,
+        .docking = docking,
     });
+
+    const dock = docking orelse false;
 
     const imguizmo_dependency = b.dependency("imguizmo", .{});
 
@@ -43,7 +49,7 @@ pub fn build(b: *std.Build) void {
     dear_command.addArg("-t");
     dear_command.addDirectoryArg(add_files.getDirectory());
     dear_command.addArg("--imconfig-path");
-    dear_command.addFileArg(imgui_dependency.path("dcimgui/master/imconfig.h"));
+    dear_command.addFileArg(imgui_dependency.path(if (dock) "dcimgui/docking/imconfig.h" else "dcimgui/master/imconfig.h"));
     dear_command.addArg("--custom-namespace-prefix");
     dear_command.addArg("ImGuizmo_");
     dear_command.addArg("-o");
@@ -69,7 +75,7 @@ pub fn build(b: *std.Build) void {
             module.addCSourceFile(.{ .file = imguizmo_dependency.path("src/ImGuizmo.cpp") });
             module.addIncludePath(b.path("src"));
             module.addIncludePath(imguizmo_dependency.path("src/"));
-            module.addIncludePath(imgui_dependency.path("dcimgui/master/"));
+            module.addIncludePath(imgui_dependency.path(if (dock) "dcimgui/docking/" else "dcimgui/master/"));
             module.linkLibrary(imgui_dependency.artifact("cimgui"));
 
             break :init module;
@@ -78,63 +84,4 @@ pub fn build(b: *std.Build) void {
     });
 
     b.installArtifact(cimguizmo_lib);
-
-    // NOTE: TMP here so we can test the trnaslation with zig build
-    const imgui_translate: std.Build.Module.Import = .{
-        .name = "imgui",
-        .module = init_imgui_module: {
-            const imgui_path = imgui_dependency.path("dcimgui/docking/");
-
-            const write_files = b.addWriteFiles();
-            const imgui_header = write_files.add("imgui_all.h",
-                \\#include "dcimgui.h"
-                \\#include "backends/dcimgui_impl_glfw.h"
-                \\#include "backends/dcimgui_impl_opengl3.h"
-                \\#include "cimguizmo.h"
-            );
-
-            const translate_c = b.addTranslateC(.{
-                .root_source_file = imgui_header,
-                .link_libc = true,
-                .optimize = optimize,
-                .target = target,
-            });
-
-            translate_c.addIncludePath(b.path("src/"));
-            translate_c.addIncludePath(imgui_path);
-            translate_c.addIncludePath(imgui_path.path(b, "backends"));
-
-            break :init_imgui_module translate_c.addModule("dfd");
-        },
-    };
-
-    const exe = b.addExecutable(.{
-        .name = "FAKE",
-        .root_module = init_exe_module: {
-            const exe_module = b.createModule(.{
-                .root_source_file = b.path("src/main.zig"),
-                .target = target,
-                .optimize = optimize,
-                .imports = &.{imgui_translate},
-            });
-
-            exe_module.linkLibrary(imgui_dependency.artifact("cimgui"));
-            exe_module.linkLibrary(cimguizmo_lib);
-
-            break :init_exe_module exe_module;
-        },
-    });
-
-    b.installArtifact(exe);
-
-    const run_step = b.step("run", "Run the app");
-
-    const run_cmd = b.addRunArtifact(exe);
-    run_step.dependOn(&run_cmd.step);
-
-    run_cmd.step.dependOn(b.getInstallStep());
-
-    if (b.args) |args| {
-        run_cmd.addArgs(args);
-    }
 }
