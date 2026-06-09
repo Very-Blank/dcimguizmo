@@ -14,6 +14,8 @@ pub fn build(b: *std.Build) void {
 
     const imguizmo_dependency = b.dependency("imguizmo", .{});
 
+    const generate_step = b.step("generate", "Generate C bindings for ImGuizmo");
+
     const dear_bindings = imgui_dependency.builder.dependency("dcimgui", .{});
 
     const add_files = b.addTempFiles();
@@ -41,6 +43,13 @@ pub fn build(b: *std.Build) void {
     dear_command.addArg("-o");
     dear_command.addArg("cimguizmo");
 
+    const update = b.addUpdateSourceFiles();
+    update.step.dependOn(&dear_command.step);
+    update.addCopyFileToSource(tmp.path(b, "cimguizmo.cpp"), "src/cimguizmo.cpp");
+    update.addCopyFileToSource(tmp.path(b, "cimguizmo.h"), "src/cimguizmo.h");
+
+    generate_step.dependOn(&update.step);
+
     const cimguizmo_lib = b.addLibrary(.{
         .name = "cimguizmo",
         .root_module = init: {
@@ -50,8 +59,8 @@ pub fn build(b: *std.Build) void {
                 .target = target,
             });
 
-            module.addCSourceFile(.{ .file = tmp.path(b, "cimguizmo.cpp") });
-            module.addIncludePath(tmp);
+            module.addCSourceFile(.{ .file = b.path("src/cimguizmo.cpp") });
+            module.addIncludePath(b.path("src"));
             module.addIncludePath(imguizmo_dependency.path("src/"));
             module.addIncludePath(imgui_dependency.path("dcimgui/master/"));
             module.linkLibrary(imgui_dependency.artifact("cimgui"));
@@ -61,11 +70,7 @@ pub fn build(b: *std.Build) void {
         .linkage = .static,
     });
 
-    cimguizmo_lib.step.dependOn(&dear_command.step);
-
-    const isntall_file = b.addInstallFile(tmp.path(b, "cimguizmo.h"), "cimguizmo.h");
-    isntall_file.step.dependOn(&dear_command.step);
-    b.getInstallStep().dependOn(&isntall_file.step);
+    cimguizmo_lib.step.dependOn(&update.step);
 
     b.installArtifact(cimguizmo_lib);
 }
