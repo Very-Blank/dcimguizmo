@@ -7,18 +7,12 @@ pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
     const optimize = b.standardOptimizeOption(.{});
 
-    const renderers = b.option([]const Renderer, "renderers", "Specify the renderer backends");
-    const platforms = b.option([]const Platform, "platforms", "Specify the platform backends");
-    const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?");
-
-    const dock = docking orelse false;
+    const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?") orelse false;
 
     const imgui_dependency = b.dependency("cimgui_zig", .{
         .target = target,
         .optimize = optimize,
-        .platforms = renderers orelse &.{},
-        .renderers = platforms orelse &.{},
-        .docking = dock,
+        .docking = docking,
     });
 
     const imguizmo_dependency = b.dependency("imguizmo", .{});
@@ -49,7 +43,7 @@ pub fn build(b: *std.Build) void {
     dear_command.addArg("-t");
     dear_command.addDirectoryArg(add_files.getDirectory());
     dear_command.addArg("--imconfig-path");
-    dear_command.addFileArg(imgui_dependency.path(if (dock) "dcimgui/docking/imconfig.h" else "dcimgui/master/imconfig.h"));
+    dear_command.addFileArg(imgui_dependency.path(if (docking) "dcimgui/docking/imconfig.h" else "dcimgui/master/imconfig.h"));
     dear_command.addArg("--custom-namespace-prefix");
     dear_command.addArg("ImGuizmo_");
     dear_command.addArg("-o");
@@ -75,7 +69,7 @@ pub fn build(b: *std.Build) void {
             module.addCSourceFile(.{ .file = imguizmo_dependency.path("src/ImGuizmo.cpp") });
             module.addIncludePath(b.path("src"));
             module.addIncludePath(imguizmo_dependency.path("src/"));
-            module.addIncludePath(imgui_dependency.path(if (dock) "dcimgui/docking/" else "dcimgui/master/"));
+            module.addIncludePath(imgui_dependency.path(if (docking) "dcimgui/docking/" else "dcimgui/master/"));
             module.linkLibrary(imgui_dependency.artifact("cimgui"));
 
             break :init module;
