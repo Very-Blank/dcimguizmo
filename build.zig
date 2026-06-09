@@ -11,15 +11,15 @@ pub fn build(b: *std.Build) void {
     const platforms = b.option([]const Platform, "platforms", "Specify the platform backends");
     const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?");
 
+    const dock = docking orelse false;
+
     const imgui_dependency = b.dependency("cimgui_zig", .{
         .target = target,
         .optimize = optimize,
-        .platforms = renderers,
-        .renderers = platforms,
-        .docking = docking,
+        .platforms = renderers orelse &.{},
+        .renderers = platforms orelse &.{},
+        .docking = dock,
     });
-
-    const dock = docking orelse false;
 
     const imguizmo_dependency = b.dependency("imguizmo", .{});
 
