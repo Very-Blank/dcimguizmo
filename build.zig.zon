@@ -6,9 +6,18 @@
             .url = "git+https://github.com/CedricGuillemet/ImGuizmo.git#be8aa4aeab86b402701c8c1df011bd8cd776760b",
             .hash = "N-V-__8AAHRReAAZQJei_NWQWC8Q1LrtJHUTz1YEIndz3jPS",
         },
-        .cimgui_zig = .{
-            .url = "git+https://github.com/tiawl/cimgui.zig.git#6236ef65bcb28dce7c85551ff666c6a05958ce70",
-            .hash = "cimgui_zig-1.0.0-2Xubko0ywgAapZ7NuD-boXc-ilbB5pSk77zwZmQ3va2o",
+        .dcimgui = .{
+            .url = "git+https://github.com/dearimgui/dear_bindings#c9ff64913915df41c0f4beef485b98a1c685eda5",
+            .hash = "N-V-__8AAPErCQARgFL-uXKTjXbwnJv4IPOIC8kr-yJrFXEr",
+        },
+        .@"imgui-master" = .{
+            .url = "git+https://github.com/ocornut/imgui?ref=v1.92.8#8936b58fe26e8c3da834b8f60b06511d537b4c63",
+            .hash = "N-V-__8AAGksdwBW9WS5PeUEDj4h55ps1ItuvJNZWfw86hyN",
+        },
+        .@"imgui-docking" = .{
+            .url = "git+https://github.com/ocornut/imgui?ref=v1.92.8-docking#b61e56346a92cfcaf1f43a545ca37b0b32239654",
+            .hash = "N-V-__8AAKmrgQA-iEFHovAwDtF8olu0VkgmKg_3T15wRPzJ",
+            .branch = "docking",
         },
     },
     .paths = .{""},

@@ -6,13 +6,12 @@ const Platform = cimgui.Platform;
 pub fn build(b: *std.Build) void {
     const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?") orelse false;
 
-    const imgui_dependency = b.dependency("cimgui_zig", .{});
-
-    const imguizmo_dependency = b.dependency("imguizmo", .{});
-
     const generate_step = b.step("generate", "Generate C bindings for ImGuizmo");
 
-    const dear_bindings = imgui_dependency.builder.dependency("dcimgui", .{});
+    const imguizmo = b.dependency("imguizmo", .{});
+    const dear_bindings = b.dependency("dcimgui", .{});
+    const dcimgui_docking = b.dependency("imgui-docking", .{});
+    const dcimgui_master = b.dependency("imgui-master", .{});
 
     const add_files = b.addTempFiles();
     _ = add_files.addCopyFile(b.path("dear_bindings/src/templates/ImGuizmo-header-template.cpp"), "ImGuizmo-header-template.cpp");
@@ -22,7 +21,7 @@ pub fn build(b: *std.Build) void {
 
     const clean_command = b.addSystemCommand(&.{"python3"});
     clean_command.addFileArg(b.path("clean.py"));
-    clean_command.addFileArg(imguizmo_dependency.path("src/ImGuizmo.h"));
+    clean_command.addFileArg(imguizmo.path("src/ImGuizmo.h"));
 
     const clean_header = clean_command.addOutputFileArg("ImGuizmo.h");
 
@@ -36,7 +35,7 @@ pub fn build(b: *std.Build) void {
     dear_command.addArg("-t");
     dear_command.addDirectoryArg(add_files.getDirectory());
     dear_command.addArg("--imconfig-path");
-    dear_command.addFileArg(imgui_dependency.path(if (docking) "dcimgui/docking/imconfig.h" else "dcimgui/master/imconfig.h"));
+    dear_command.addFileArg(if (docking) dcimgui_docking.path("imconfig.h") else dcimgui_master.path("imconfig.h"));
     dear_command.addArg("--custom-namespace-prefix");
     dear_command.addArg("ImGuizmo_");
     dear_command.addArg("-o");
