@@ -33,6 +33,7 @@ pub fn build(b: *std.Build) void {
     const tmp = b.tmpPath();
     const dear_command = b.addSystemCommand(&.{"python3"});
     dear_command.step.dependOn(&clean_command.step);
+
     dear_command.setCwd(tmp);
     dear_command.addFileArg(dear_bindings.path("dear_bindings.py"));
     dear_command.addFileArg(clean_header);
@@ -69,8 +70,6 @@ pub fn build(b: *std.Build) void {
         },
         .linkage = .static,
     });
-
-    cimguizmo_lib.step.dependOn(&update.step);
 
     b.installArtifact(cimguizmo_lib);
 }
