@@ -24,15 +24,15 @@ pub fn build(b: *std.Build) void {
 
     const sanitize_imguizmo = b.addSystemCommand(&.{
         "python3",
-        b.path("clean.py").getPath(b),
     });
+    sanitize_imguizmo.addFileArg(b.path("clean.py"));
 
     sanitize_imguizmo.addFileArg(imguizmo_dependency.path("src/ImGuizmo.h"));
-
     const sanitized_header = sanitize_imguizmo.addOutputFileArg("ImGuizmo.h");
 
     const tmp = b.tmpPath();
     const run_python = b.addSystemCommand(&.{"python3"});
+    run_python.step.dependOn(&sanitize_imguizmo.step);
     run_python.setCwd(tmp);
     run_python.addFileArg(dear_bindings.path("dear_bindings.py"));
     run_python.addFileArg(sanitized_header);
