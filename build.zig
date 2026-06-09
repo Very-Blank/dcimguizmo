@@ -4,16 +4,9 @@ const Renderer = cimgui.Renderer;
 const Platform = cimgui.Platform;
 
 pub fn build(b: *std.Build) void {
-    const target = b.standardTargetOptions(.{});
-    const optimize = b.standardOptimizeOption(.{});
-
     const docking = b.option(bool, "docking", "master or docking ocornut/imgui branch?") orelse false;
 
-    const imgui_dependency = b.dependency("cimgui_zig", .{
-        .target = target,
-        .optimize = optimize,
-        .docking = docking,
-    });
+    const imgui_dependency = b.dependency("cimgui_zig", .{});
 
     const imguizmo_dependency = b.dependency("imguizmo", .{});
 
@@ -55,27 +48,4 @@ pub fn build(b: *std.Build) void {
     update.addCopyFileToSource(tmp.path(b, "cimguizmo.h"), "src/cimguizmo.h");
 
     generate_step.dependOn(&update.step);
-
-    const cimguizmo_lib = b.addLibrary(.{
-        .name = "cimguizmo",
-        .root_module = init: {
-            const module = b.createModule(.{
-                .link_libcpp = true,
-                .optimize = optimize,
-                .target = target,
-            });
-
-            module.addCSourceFile(.{ .file = b.path("src/cimguizmo.cpp") });
-            module.addCSourceFile(.{ .file = imguizmo_dependency.path("src/ImGuizmo.cpp") });
-            module.addIncludePath(b.path("src"));
-            module.addIncludePath(imguizmo_dependency.path("src/"));
-            module.addIncludePath(imgui_dependency.path(if (docking) "dcimgui/docking/" else "dcimgui/master/"));
-            module.linkLibrary(imgui_dependency.artifact("cimgui"));
-
-            break :init module;
-        },
-        .linkage = .static,
-    });
-
-    b.installArtifact(cimguizmo_lib);
 }
