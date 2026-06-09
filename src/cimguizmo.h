@@ -48,13 +48,15 @@
 // - Multi view
 // - display rotation/translation/scale infos in local/world space and not only local
 // - finish local/world matrix application
-// - OPERATION as bitmask
+// - ImGuizmo_OPERATION as bitmask
 //
 // -------------------------------------------------------------------------------------------
 // Example
 #if 0
 CIMGUI_API void cEditTransform(Camera camera, matrix_t* matrix);
 #endif // #if 0
+// Auto-generated forward declarations for C header
+typedef struct ImGuizmo_Style_t ImGuizmo_Style;
 #pragma once
 
 #ifdef __cplusplus
@@ -72,6 +74,100 @@ extern "C"
 #endif // #ifndef ImGui
 typedef struct ImGuiWindow_t ImGuiWindow;
 
+#ifndef ImGuizmo_OPERATION_DEFINED
+typedef enum
+{
+    TRANSLATE_X   = (1<<0),
+    TRANSLATE_Y   = (1<<1),
+    TRANSLATE_Z   = (1<<2),
+    ROTATE_X      = (1<<3),
+    ROTATE_Y      = (1<<4),
+    ROTATE_Z      = (1<<5),
+    ROTATE_SCREEN = (1<<6),
+    SCALE_X       = (1<<7),
+    SCALE_Y       = (1<<8),
+    SCALE_Z       = (1<<9),
+    BOUNDS        = (1<<10),
+    SCALE_XU      = (1<<11),
+    SCALE_YU      = (1<<12),
+    SCALE_ZU      = (1<<13),
+
+    TRANSLATE     = TRANSLATE_X | TRANSLATE_Y | TRANSLATE_Z,
+    ROTATE        = ROTATE_X | ROTATE_Y | ROTATE_Z | ROTATE_SCREEN,
+    SCALE         = SCALE_X | SCALE_Y | SCALE_Z,
+    SCALEU        = SCALE_XU | SCALE_YU | SCALE_ZU,  // universal
+    UNIVERSAL     = TRANSLATE | ROTATE | SCALEU,
+} ImGuizmo_OPERATION_;
+typedef int ImGuizmo_OPERATION;
+#endif // #ifndef ImGuizmo_OPERATION_DEFINED
+#ifndef ImGuizmo_MODE_DEFINED
+typedef enum
+{
+    LOCAL,
+    WORLD,
+} ImGuizmo_MODE_;
+typedef int ImGuizmo_MODE;
+#endif // #ifndef ImGuizmo_MODE_DEFINED
+#ifndef ImGuizmo_MOVETYPE_DEFINED
+typedef enum
+{
+    MT_NONE,
+    MT_MOVE_X,
+    MT_MOVE_Y,
+    MT_MOVE_Z,
+    MT_MOVE_YZ,
+    MT_MOVE_ZX,
+    MT_MOVE_XY,
+    MT_MOVE_SCREEN,
+    MT_ROTATE_X,
+    MT_ROTATE_Y,
+    MT_ROTATE_Z,
+    MT_ROTATE_SCREEN,
+    MT_SCALE_X,
+    MT_SCALE_Y,
+    MT_SCALE_Z,
+    MT_SCALE_XYZ,
+} ImGuizmo_MOVETYPE_;
+typedef int ImGuizmo_MOVETYPE;
+#endif // #ifndef ImGuizmo_MOVETYPE_DEFINED
+#ifndef ImGuizmo_COLOR_DEFINED
+typedef enum
+{
+    DIRECTION_X,       // directionColor[0]
+    DIRECTION_Y,       // directionColor[1]
+    DIRECTION_Z,       // directionColor[2]
+    PLANE_X,           // planeColor[0]
+    PLANE_Y,           // planeColor[1]
+    PLANE_Z,           // planeColor[2]
+    SELECTION,         // selectionColor
+    INACTIVE,          // inactiveColor
+    TRANSLATION_LINE,  // translationLineColor
+    SCALE_LINE,
+    ROTATION_USING_BORDER,
+    ROTATION_USING_FILL,
+    HATCHED_AXIS_LINES,
+    TEXT,
+    TEXT_SHADOW,
+    COUNT,
+} ImGuizmo_COLOR_;
+typedef int ImGuizmo_COLOR;
+#endif // #ifndef ImGuizmo_COLOR_DEFINED
+#ifndef ImGuizmo_Style_DEFINED
+struct ImGuizmo_Style_t
+{
+    float  TranslationLineThickness;    // Thickness of lines for translation gizmo
+    float  TranslationLineArrowSize;    // Size of arrow at the end of lines for translation gizmo
+    float  RotationLineThickness;       // Thickness of lines for rotation gizmo
+    float  RotationOuterLineThickness;  // Thickness of line surrounding the rotation gizmo
+    float  ScaleLineThickness;          // Thickness of lines for scale gizmo
+    float  ScaleLineCircleSize;         // Size of circle at the end of lines for scale gizmo
+    float  HatchedAxisLineThickness;    // Thickness of hatched axis lines
+    float  CenterCircleSize;            // Size of circle at the center of the translate/scale gizmo
+
+    ImVec4 Colors[COUNT];
+};
+typedef struct ImGuizmo_Style_t ImGuizmo_Style;
+#endif // #ifndef ImGuizmo_Style_DEFINED
 // call inside your own window and before Manipulate() in order to draw gizmo to that window.
 // Or pass a specific ImDrawList to draw to (e.g. GetForegroundDrawList()).
 CIMGUI_API void ImGuizmo_SetDrawlist(void);                                 // Implied drawlist = nullptr
@@ -138,6 +234,70 @@ CIMGUI_API void ImGuizmo_DrawGridCustomColor(const float* view, const float* pro
 // Needs view and projection matrices.
 // matrix parameter is the source matrix (where will be gizmo be drawn) and might be transformed by the function. Return deltaMatrix is optional
 // translation is applied in world space
+
+CIMGUI_API bool ImGuizmo_Manipulate(const float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix); // Implied deltaMatrix = NULL, snap = NULL, localBounds = NULL, boundsSnap = NULL
+CIMGUI_API bool ImGuizmo_ManipulateEx(const float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix, float* deltaMatrix /* = NULL */, const float* snap /* = NULL */, const float* localBounds /* = NULL */, const float* boundsSnap /* = NULL */);
+//
+// Please note that this cubeview is patented by Autodesk : https://patents.google.com/patent/US7782319B2/en
+// It seems to be a defensive patent in the US. I don't think it will bring troubles using it as
+// other software are using the same mechanics. But just in case, you are now warned!
+//
+CIMGUI_API void ImGuizmo_ViewManipulate(float* view, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor);
+
+// use this version if you did not call Manipulate before and you are just using ViewManipulate
+CIMGUI_API void ImGuizmo_ViewManipulateFloatPtr(float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor);
+
+CIMGUI_API void ImGuizmo_SetAlternativeWindow(ImGuiWindow* window);
+
+// ID stack/scopes
+// Read the FAQ (docs/FAQ.md or http://dearimgui.org/faq) for more details about how ID are handled in dear imgui.
+// - Those questions are answered and impacted by understanding of the ID stack system:
+//   - "Q: Why is my widget not reacting when I click on it?"
+//   - "Q: How can I have widgets with an empty label?"
+//   - "Q: How can I have multiple widgets with the same label?"
+// - Short version: ID are hashes of the entire ID stack. If you are creating widgets in a loop you most likely
+//   want to push a unique identifier (e.g. object pointer, loop index) to uniquely differentiate them.
+// - You can also use the "Label##foobar" syntax within widget label to distinguish them from each others.
+// - In this header file we use the "label"/"name" terminology to denote a string that will be displayed + used as an ID,
+//   whereas "str_id" denote a string that is only used as an ID and not normally displayed.
+CIMGUI_API void    ImGuizmo_PushID(const char* str_id);                                // push string into the ID stack (will hash string).
+CIMGUI_API void    ImGuizmo_PushIDStr(const char* str_id_begin, const char* str_id_end); // push string into the ID stack (will hash string).
+CIMGUI_API void    ImGuizmo_PushIDPtr(const void* ptr_id);                             // push pointer into the ID stack (will hash pointer).
+CIMGUI_API void    ImGuizmo_PushIDInt(int int_id);                                     // push integer into the ID stack (will hash integer).
+CIMGUI_API void    ImGuizmo_PopID(void);                                               // pop from the ID stack.
+CIMGUI_API ImGuiID ImGuizmo_GetID(const char* str_id);                                 // calculate unique ID (hash of whole ID stack + given parameter). e.g. if you want to query into ImGuiStorage yourself
+CIMGUI_API ImGuiID ImGuizmo_GetIDStr(const char* str_id_begin, const char* str_id_end);
+CIMGUI_API ImGuiID ImGuizmo_GetIDPtr(const void* ptr_id);
+
+// return true if the cursor is over the operation's gizmo
+CIMGUI_API bool ImGuizmo_IsOverImGuizmo_OPERATION(ImGuizmo_OPERATION op);
+CIMGUI_API void ImGuizmo_SetGizmoSizeClipSpace(float value);
+
+// Handle type used by the translate/rotate/scale gizmos.
+
+// Returns which handle is actively being dragged, or MT_NONE.
+CIMGUI_API ImGuizmo_MOVETYPE ImGuizmo_GetActiveHandleType(void);
+// Returns which handle is currently hovered, or MT_NONE.
+CIMGUI_API ImGuizmo_MOVETYPE ImGuizmo_GetHoveredHandleType(void);
+// Aliases matching the ImGuizmo_MOVETYPE enum name.
+CIMGUI_API ImGuizmo_MOVETYPE ImGuizmo_GetActiveMoveType(void);
+CIMGUI_API ImGuizmo_MOVETYPE ImGuizmo_GetHoveredMoveType(void);
+
+// Allow axis to flip
+// When true (default), the guizmo axis flip for better visibility
+// When false, they always stay along the positive world/local axis
+CIMGUI_API void ImGuizmo_AllowAxisFlip(bool value);
+
+// Configure the limit where axis are hidden
+CIMGUI_API void ImGuizmo_SetAxisLimit(float value);
+// Set an axis mask to permanently hide a given axis (true -> hidden, false -> shown)
+CIMGUI_API void ImGuizmo_SetAxisMask(bool x, bool y, bool z);
+// Configure the limit where planes are hiden
+CIMGUI_API void ImGuizmo_SetPlaneLimit(float value);
+// from a x,y,z point in space and using Manipulation view/projection matrix, check if mouse is in pixel radius distance of that projected point
+CIMGUI_API bool ImGuizmo_IsOverFloatPtr(float* position, float pixelRadius);
+
+CIMGUI_API ImGuizmo_Style* ImGuizmo_GetStyle(void);
 #ifdef __cplusplus
 } // End of extern "C" block
 #endif

@@ -13,6 +13,24 @@ typedef ImGuizmo::MOVETYPE MOVETYPE;
 typedef ImGuizmo::COLOR COLOR;
 typedef ImGuizmo::Style Style;
 
+// Define the typedefs in the global namespace and guard them
+// so they are available globally for return types in cimguizmo.cpp,
+// and the duplicate definitions in cimguizmo.h are skipped.
+typedef ::OPERATION ImGuizmo_OPERATION;
+#define ImGuizmo_OPERATION_DEFINED
+
+typedef ::MODE ImGuizmo_MODE;
+#define ImGuizmo_MODE_DEFINED
+
+typedef ::MOVETYPE ImGuizmo_MOVETYPE;
+#define ImGuizmo_MOVETYPE_DEFINED
+
+typedef ::COLOR ImGuizmo_COLOR;
+#define ImGuizmo_COLOR_DEFINED
+
+typedef ::Style ImGuizmo_Style;
+#define ImGuizmo_Style_DEFINED
+
 // Wrap this in a namespace to keep it separate from the C++ API.
 #define DEAR_BINDINGS_INTERNAL_GLUE_CODE
 namespace cimgui
@@ -132,4 +150,129 @@ CIMGUI_API void cimgui::ImGuizmo_DrawGridCustom(const float* view, const float* 
 CIMGUI_API void cimgui::ImGuizmo_DrawGridCustomColor(const float* view, const float* projection, const float* matrix, const float gridSize, const float majorStep, const unsigned int subdivision, const ImU32 majorCol, const ImU32 minorCol, const ImU32 centerCol)
 {
     ::ImGui::DrawGridCustomColor(view, projection, matrix, gridSize, majorStep, subdivision, majorCol, minorCol, centerCol);
+}
+
+CIMGUI_API bool cimgui::ImGuizmo_Manipulate(const float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix)
+{
+    return ::ImGui::Manipulate(view, projection, operation, mode, matrix);
+}
+
+CIMGUI_API bool cimgui::ImGuizmo_ManipulateEx(const float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix, float* deltaMatrix, const float* snap, const float* localBounds, const float* boundsSnap)
+{
+    return ::ImGui::Manipulate(view, projection, operation, mode, matrix, deltaMatrix, snap, localBounds, boundsSnap);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_ViewManipulate(float* view, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor)
+{
+    ::ImGui::ViewManipulate(view, length, position, size, backgroundColor);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_ViewManipulateFloatPtr(float* view, const float* projection, ImGuizmo_OPERATION operation, ImGuizmo_MODE mode, float* matrix, float length, ImVec2 position, ImVec2 size, ImU32 backgroundColor)
+{
+    ::ImGui::ViewManipulate(view, projection, operation, mode, matrix, length, position, size, backgroundColor);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_SetAlternativeWindow(cimgui::ImGuiWindow* window)
+{
+    ::ImGui::SetAlternativeWindow(reinterpret_cast<::ImGuiWindow*>(window));
+}
+
+CIMGUI_API void    cimgui::ImGuizmo_PushID(const char* str_id)
+{
+    ::ImGui::PushID(str_id);
+}
+
+CIMGUI_API void    cimgui::ImGuizmo_PushIDStr(const char* str_id_begin, const char* str_id_end)
+{
+    ::ImGui::PushID(str_id_begin, str_id_end);
+}
+
+CIMGUI_API void    cimgui::ImGuizmo_PushIDPtr(const void* ptr_id)
+{
+    ::ImGui::PushID(ptr_id);
+}
+
+CIMGUI_API void    cimgui::ImGuizmo_PushIDInt(int int_id)
+{
+    ::ImGui::PushID(int_id);
+}
+
+CIMGUI_API void    cimgui::ImGuizmo_PopID(void)
+{
+    ::ImGui::PopID();
+}
+
+CIMGUI_API ImGuiID cimgui::ImGuizmo_GetID(const char* str_id)
+{
+    return ::ImGui::GetID(str_id);
+}
+
+CIMGUI_API ImGuiID cimgui::ImGuizmo_GetIDStr(const char* str_id_begin, const char* str_id_end)
+{
+    return ::ImGui::GetID(str_id_begin, str_id_end);
+}
+
+CIMGUI_API ImGuiID cimgui::ImGuizmo_GetIDPtr(const void* ptr_id)
+{
+    return ::ImGui::GetID(ptr_id);
+}
+
+CIMGUI_API bool cimgui::ImGuizmo_IsOverImGuizmo_OPERATION(ImGuizmo_OPERATION op)
+{
+    return ::ImGui::IsOver(op);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_SetGizmoSizeClipSpace(float value)
+{
+    ::ImGui::SetGizmoSizeClipSpace(value);
+}
+
+CIMGUI_API ImGuizmo_MOVETYPE cimgui::ImGuizmo_GetActiveHandleType(void)
+{
+    return ::ImGui::GetActiveHandleType();
+}
+
+CIMGUI_API ImGuizmo_MOVETYPE cimgui::ImGuizmo_GetHoveredHandleType(void)
+{
+    return ::ImGui::GetHoveredHandleType();
+}
+
+CIMGUI_API ImGuizmo_MOVETYPE cimgui::ImGuizmo_GetActiveMoveType(void)
+{
+    return ::ImGui::GetActiveMoveType();
+}
+
+CIMGUI_API ImGuizmo_MOVETYPE cimgui::ImGuizmo_GetHoveredMoveType(void)
+{
+    return ::ImGui::GetHoveredMoveType();
+}
+
+CIMGUI_API void cimgui::ImGuizmo_AllowAxisFlip(bool value)
+{
+    ::ImGui::AllowAxisFlip(value);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_SetAxisLimit(float value)
+{
+    ::ImGui::SetAxisLimit(value);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_SetAxisMask(bool x, bool y, bool z)
+{
+    ::ImGui::SetAxisMask(x, y, z);
+}
+
+CIMGUI_API void cimgui::ImGuizmo_SetPlaneLimit(float value)
+{
+    ::ImGui::SetPlaneLimit(value);
+}
+
+CIMGUI_API bool cimgui::ImGuizmo_IsOverFloatPtr(float* position, float pixelRadius)
+{
+    return ::ImGui::IsOver(position, pixelRadius);
+}
+
+CIMGUI_API cimgui::ImGuizmo_Style* cimgui::ImGuizmo_GetStyle(void)
+{
+    return reinterpret_cast<::cimgui::ImGuizmo_Style*>(&::ImGui::GetStyle());
 }
